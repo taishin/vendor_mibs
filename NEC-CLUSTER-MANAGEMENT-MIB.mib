@@ -1,0 +1,297 @@
+-- ****************************************************************************
+-- NEC Cluster Management MIB ver.201109060300Z
+-- 
+-- Copyright (c) 2011 by NEC Corporation. All Rights Reserved.
+-- 
+-- ****************************************************************************
+
+NEC-CLUSTER-MANAGEMENT-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+    MODULE-IDENTITY,
+    OBJECT-IDENTITY,
+    enterprises
+        FROM SNMPv2-SMI
+    TEXTUAL-CONVENTION,
+    DisplayString
+        FROM SNMPv2-TC
+    base-mib
+        FROM NEC-CLUSTER-SMI;
+
+-- =====================================
+-- Module Identity
+-- =====================================
+
+clusterManagementMIB MODULE-IDENTITY
+    LAST-UPDATED    "201109060300Z"
+    ORGANIZATION    "NEC Corporation"
+    CONTACT-INFO    "7-1, Shiba 5-chome
+                     Minato-ku, Tokyo 108-8001
+                     Japan"
+    DESCRIPTION     "The mib module for management cluster system."
+    REVISION        "201109060300Z"
+    DESCRIPTION
+        "Initial version of this mib module."
+    ::= { base-mib 2 }
+
+-- =====================================
+-- Textual Conventions
+-- =====================================
+
+ClusterStatus ::= TEXTUAL-CONVENTION
+    STATUS          current
+    DESCRIPTION
+        ""
+    SYNTAX          INTEGER {
+                        normal(1),
+                        online(2),
+                        offline(3),
+                        caution(4),
+                        error(5),
+                        onlineFailure(6),
+                        offlineFailure(7),
+                        onlinePending(8),
+                        offlinePending(9),
+                        unknown(10),
+                        suspend(11),
+                        pending(12),
+                        isolated(13),
+                        unused(14)
+                    }
+
+ClusterGroupType ::= TEXTUAL-CONVENTION
+    STATUS          current
+    DESCRIPTION
+        ""
+    SYNTAX          INTEGER {	
+                        failover(1),
+                        cluster(2),
+                        virtualMachine(3)
+                    }
+
+-- =====================================
+-- Definitions of MIB Tree
+-- =====================================
+
+clusterGeneral       OBJECT IDENTIFIER ::= { clusterManagementMIB 1 }
+clusterServer        OBJECT IDENTIFIER ::= { clusterManagementMIB 2 }
+clusterGroup         OBJECT IDENTIFIER ::= { clusterManagementMIB 3 }
+
+-- =====================================
+-- Definitions of MIB Object
+-- =====================================
+
+-- clusterGeneral
+
+clusterName OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The name of cluster."
+        ::= { clusterGeneral 1 }
+
+clusterComment OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The comment of cluster."
+        ::= { clusterGeneral 2 }
+
+clusterStatus OBJECT-TYPE
+        SYNTAX        ClusterStatus
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The current state of cluster."
+        ::= { clusterGeneral 3 }
+
+-- clusterServer
+
+clusterServerLocalServerIndex OBJECT-TYPE
+        SYNTAX        INTEGER
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The index of local server. This value indicates
+                       instance of clusterServerIndex in clusterServerTable."
+        ::= { clusterServer 1 }
+
+clusterServerTable OBJECT-TYPE
+    SYNTAX  SEQUENCE OF ClusterServerEntry
+    ACCESS  not-accessible
+    STATUS  current
+    DESCRIPTION
+            "A list of server entries."
+    ::= { clusterServer 2 }
+
+clusterServerEntry OBJECT-TYPE
+    SYNTAX  ClusterServerEntry
+    ACCESS  not-accessible
+    STATUS  current
+    DESCRIPTION
+            "A server entry."
+    INDEX   { clusterServerIndex }
+    ::= { clusterServerTable 1 }
+
+ClusterServerEntry ::=
+    SEQUENCE {
+        clusterServerIndex
+            INTEGER,
+        clusterServerName
+            DisplayString,
+        clusterServerComment
+            DisplayString,
+        clusterServerStatus
+            ClusterStatus,
+        clusterServerPriority
+            INTEGER,
+        clusterServerProductName
+            DisplayString,
+        clusterServerProductVersion
+            DisplayString,
+        clusterServerProductInstallPath
+            DisplayString,
+        clusterServerPlatformName
+            DisplayString
+    }
+
+clusterServerIndex OBJECT-TYPE
+        SYNTAX        INTEGER
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "A unique value for each servers."
+        ::= { clusterServerEntry 1 }
+
+clusterServerName OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The name of server."
+        ::= { clusterServerEntry 2 }
+
+clusterServerComment OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The comment of server."
+        ::= { clusterServerEntry 3 }
+
+clusterServerStatus OBJECT-TYPE
+        SYNTAX        ClusterStatus
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The current state of server."
+        ::= { clusterServerEntry 4 }
+
+clusterServerPriority OBJECT-TYPE
+        SYNTAX        INTEGER
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The priority of server."
+        ::= { clusterServerEntry 5 }
+
+clusterServerProductName OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The product name of cluster system."
+        ::= { clusterServerEntry 6 }
+
+clusterServerProductVersion OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The product version of cluster system."
+        ::= { clusterServerEntry 7 }
+
+clusterServerProductInstallPath OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The install path of cluster system."
+        ::= { clusterServerEntry 8 }
+
+clusterServerPlatformName OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The platform name of server."
+        ::= { clusterServerEntry 9 }
+
+-- clusterGroup
+
+clusterGroupTable OBJECT-TYPE
+    SYNTAX  SEQUENCE OF ClusterGroupEntry
+    ACCESS  not-accessible
+    STATUS  current
+    DESCRIPTION
+            "A list of group entries."
+    ::= { clusterGroup 1 }
+
+clusterGroupEntry OBJECT-TYPE
+    SYNTAX  ClusterServerEntry
+    ACCESS  not-accessible
+    STATUS  current
+    DESCRIPTION
+            "A group entry."
+    INDEX   { clusterGroupIndex }
+    ::= { clusterGroupTable 1 }
+
+ClusterGroupEntry ::=
+    SEQUENCE {
+        clusterGroupIndex
+            INTEGER,
+        clusterGroupName
+            DisplayString,
+        clusterGroupComment
+            DisplayString,
+        clusterGroupType
+            ClusterGroupType,
+        clusterGroupStatus
+            ClusterStatus,
+        clusterGroupCurrentServerIndex
+            INTEGER
+    }
+
+clusterGroupIndex OBJECT-TYPE
+        SYNTAX        INTEGER
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "A unique value for each groups."
+        ::= { clusterGroupEntry 1 }
+
+clusterGroupName OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The name of group."
+        ::= { clusterGroupEntry 2 }
+
+clusterGroupComment OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The comment of group."
+        ::= { clusterGroupEntry 3 }
+
+clusterGroupType OBJECT-TYPE
+        SYNTAX        ClusterGroupType
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The type of group."
+        ::= { clusterGroupEntry 4 }
+
+clusterGroupStatus OBJECT-TYPE
+        SYNTAX        ClusterStatus
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The current state of group."
+        ::= { clusterGroupEntry 5 }
+
+clusterGroupCurrentServerIndex OBJECT-TYPE
+        SYNTAX        INTEGER
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The current server index of group.
+                       This value should be -1
+                       if the group is not activated on any servers."
+        ::= { clusterGroupEntry 6 }
+
+END

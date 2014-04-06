@@ -1,0 +1,804 @@
+#
+#
+#
+#
+MIB: VMWARE-ENV-MIB (file:./VMWARE-ENV-MIB.mib) converted on Thu Feb 21 19:27:35 2013 using snmpttconvertmib v1.3
+#
+#
+#
+EVENT vmwEnvHardwareEvent .1.3.6.1.4.1.6876.0.301 "Status Events" Normal
+FORMAT $*
+SDESC
+
+This notification, if the agent is so configured, may be sent when the
+system has detected a material change in physical condition of the
+hardware
+Variables:
+  1: vmwSubsystemType
+     Syntax="INTEGER"
+       1: unknown
+       10: voltage
+       2: chassis
+       3: powerSupply
+       4: fan
+       5: cpu
+       6: memory
+       7: battery
+       8: temperatureSensor
+       9: raidController
+     Descr="Hardware component reporting environmental state"
+  2: vmwHardwareStatus
+     Syntax="INTEGER"
+       1: unknown
+       2: normal
+       3: marginal
+       4: critical
+       5: failed
+     Descr="Last reported state of this component"
+  3: vmwEventDescription
+     Syntax="OCTETSTR"
+     Descr="Human readable description of this event"
+  4: vmwEnvHardwareTime
+     Syntax="TICKS"
+     Descr="Value of sysUptime when vmwHardwareStatus was obtained"
+EDESC
+#
+#
+#
+EVENT vmwESXEnvHardwareEvent .1.3.6.1.4.1.6876.4.1.0.301 "Status Events" Normal
+FORMAT $*
+SDESC
+
+ESX Specific version of this notification, 
+if the agent is so configured, may be sent when 
+the ESX Operating System has detected a material change in 
+physical condition of the hardware
+Variables:
+  1: vmwSubsystemType
+     Syntax="INTEGER"
+       1: unknown
+       10: voltage
+       2: chassis
+       3: powerSupply
+       4: fan
+       5: cpu
+       6: memory
+       7: battery
+       8: temperatureSensor
+       9: raidController
+     Descr="Hardware component reporting environmental state"
+  2: vmwHardwareStatus
+     Syntax="INTEGER"
+       1: unknown
+       2: normal
+       3: marginal
+       4: critical
+       5: failed
+     Descr="Last reported state of this component"
+  3: vmwEventDescription
+     Syntax="OCTETSTR"
+     Descr="Human readable description of this event"
+  4: vmwEnvHardwareTime
+     Syntax="TICKS"
+     Descr="Value of sysUptime when vmwHardwareStatus was obtained"
+EDESC
+#
+#
+#
+EVENT vmwESXEnvHardwareAlert .1.3.6.1.4.1.6876.4.1.0.302 "Status Events" Normal
+FORMAT $*
+SDESC
+
+A hardware alert as received from the Common Infrastructure Management (CIM) subsystem on this system.
+REFERENCE  http://www.dmtf.org/standards/cim/cim_schema_v2240 : file CIM_AlertIndication.mof
+Variables:
+  1: vmwEnvDescription
+     Syntax="OCTETSTR"
+     Descr="A short description of the Indication."
+  2: vmwEnvEventTime
+     Syntax="OCTETSTR"
+     Descr="The time and date the underlying event was first 
+       detected. May be set to the time the SNMP agent recieved the notification 
+       if in the incoming CIM indication the value is
+       NULL due to the creating entity not being capable of providing 
+       this information. This value is based on the notion of
+       local date and time of the Managed System Element
+       generating the Indication."
+  3: vmwEnvIndicationTime
+     Syntax="OCTETSTR"
+     Descr="The time and date of creation of the underlying Indication received by the snmp agent. The
+       property may be set to the time SNMP agent received the notification if the entity creating the
+       Indication is not capable of determining this
+       information and delivers a null IndicationTime property. Note that IndicationTime may be the same
+       for two Indications that are generated in rapid succession."
+  4: vmwEnvPerceivedSeverity
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: information
+       3: warning
+       4: minor
+       5: major
+       6: critical
+       7: fatal
+     Descr="An enumerated value that describes the severity of the 
+       Alert Indication from the notifier's point of view."
+  5: vmwEnvAlertType
+     Syntax="INTEGER"
+       1: other
+       2: communications
+       3: qos
+       4: processingError
+       5: deviceAlert
+       6: environmentalAlert
+       7: modelChange
+       8: securityAlert
+     Descr="Primary classification of the Indication."
+  6: vmwEnvSysCreationClassName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's CreationClassName for the Provider 
+       generating this Indication."
+  7: vmwEnvAlertingElement
+     Syntax="OCTETSTR"
+     Descr="The identifying information of the entity (ie, the
+       instance) for which this notification is generated. The
+       property contains the CIM path of an CIM object instance, 
+       encoded as a string parameter - if the instance is modeled in the CIM
+       Schema. If not a CIM instance, the property contains
+       some identifying string that names the entity for which
+       the Alert is generated. The path or identifying string
+       is formatted per the AlertingElementFormat property."
+  8: vmwEnvAlertingFormat
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: cimObjectPath
+     Descr="The format of the AlertingManagedElement property is
+       interpretable based upon the value of this property."
+  9: vmwEnvSystemName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's Name for the Provider generating this message."
+ 10: vmwEnvProviderName
+     Syntax="OCTETSTR"
+     Descr="The name of the CIM provider, a software module loaded into the CIM subsystem, generating this message."
+EDESC
+#
+#
+#
+EVENT vmwESXEnvBatteryAlert .1.3.6.1.4.1.6876.4.1.0.303 "Status Events" Normal
+FORMAT $*
+SDESC
+
+A battery alert as received from the Common Infrastructure Management (CIM) subsystem on this system.
+REFERENCE  http://www.dmtf.org/standards/cim/cim_schema_v2240 : file CIM_AlertIndication.mof
+Variables:
+  1: vmwEnvDescription
+     Syntax="OCTETSTR"
+     Descr="A short description of the Indication."
+  2: vmwEnvEventTime
+     Syntax="OCTETSTR"
+     Descr="The time and date the underlying event was first 
+       detected. May be set to the time the SNMP agent recieved the notification 
+       if in the incoming CIM indication the value is
+       NULL due to the creating entity not being capable of providing 
+       this information. This value is based on the notion of
+       local date and time of the Managed System Element
+       generating the Indication."
+  3: vmwEnvIndicationTime
+     Syntax="OCTETSTR"
+     Descr="The time and date of creation of the underlying Indication received by the snmp agent. The
+       property may be set to the time SNMP agent received the notification if the entity creating the
+       Indication is not capable of determining this
+       information and delivers a null IndicationTime property. Note that IndicationTime may be the same
+       for two Indications that are generated in rapid succession."
+  4: vmwEnvPerceivedSeverity
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: information
+       3: warning
+       4: minor
+       5: major
+       6: critical
+       7: fatal
+     Descr="An enumerated value that describes the severity of the 
+       Alert Indication from the notifier's point of view."
+  5: vmwEnvAlertType
+     Syntax="INTEGER"
+       1: other
+       2: communications
+       3: qos
+       4: processingError
+       5: deviceAlert
+       6: environmentalAlert
+       7: modelChange
+       8: securityAlert
+     Descr="Primary classification of the Indication."
+  6: vmwEnvSysCreationClassName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's CreationClassName for the Provider 
+       generating this Indication."
+  7: vmwEnvAlertingElement
+     Syntax="OCTETSTR"
+     Descr="The identifying information of the entity (ie, the
+       instance) for which this notification is generated. The
+       property contains the CIM path of an CIM object instance, 
+       encoded as a string parameter - if the instance is modeled in the CIM
+       Schema. If not a CIM instance, the property contains
+       some identifying string that names the entity for which
+       the Alert is generated. The path or identifying string
+       is formatted per the AlertingElementFormat property."
+  8: vmwEnvAlertingFormat
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: cimObjectPath
+     Descr="The format of the AlertingManagedElement property is
+       interpretable based upon the value of this property."
+  9: vmwEnvSystemName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's Name for the Provider generating this message."
+ 10: vmwEnvProviderName
+     Syntax="OCTETSTR"
+     Descr="The name of the CIM provider, a software module loaded into the CIM subsystem, generating this message."
+EDESC
+#
+#
+#
+EVENT vmwESXEnvChassisAlert .1.3.6.1.4.1.6876.4.1.0.304 "Status Events" Normal
+FORMAT $*
+SDESC
+
+A chassis alert as received from the Common Infrastructure Management (CIM) subsystem on this system.
+REFERENCE  http://www.dmtf.org/standards/cim/cim_schema_v2240 : file CIM_AlertIndication.mof
+Variables:
+  1: vmwEnvDescription
+     Syntax="OCTETSTR"
+     Descr="A short description of the Indication."
+  2: vmwEnvEventTime
+     Syntax="OCTETSTR"
+     Descr="The time and date the underlying event was first 
+       detected. May be set to the time the SNMP agent recieved the notification 
+       if in the incoming CIM indication the value is
+       NULL due to the creating entity not being capable of providing 
+       this information. This value is based on the notion of
+       local date and time of the Managed System Element
+       generating the Indication."
+  3: vmwEnvIndicationTime
+     Syntax="OCTETSTR"
+     Descr="The time and date of creation of the underlying Indication received by the snmp agent. The
+       property may be set to the time SNMP agent received the notification if the entity creating the
+       Indication is not capable of determining this
+       information and delivers a null IndicationTime property. Note that IndicationTime may be the same
+       for two Indications that are generated in rapid succession."
+  4: vmwEnvPerceivedSeverity
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: information
+       3: warning
+       4: minor
+       5: major
+       6: critical
+       7: fatal
+     Descr="An enumerated value that describes the severity of the 
+       Alert Indication from the notifier's point of view."
+  5: vmwEnvAlertType
+     Syntax="INTEGER"
+       1: other
+       2: communications
+       3: qos
+       4: processingError
+       5: deviceAlert
+       6: environmentalAlert
+       7: modelChange
+       8: securityAlert
+     Descr="Primary classification of the Indication."
+  6: vmwEnvSysCreationClassName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's CreationClassName for the Provider 
+       generating this Indication."
+  7: vmwEnvAlertingElement
+     Syntax="OCTETSTR"
+     Descr="The identifying information of the entity (ie, the
+       instance) for which this notification is generated. The
+       property contains the CIM path of an CIM object instance, 
+       encoded as a string parameter - if the instance is modeled in the CIM
+       Schema. If not a CIM instance, the property contains
+       some identifying string that names the entity for which
+       the Alert is generated. The path or identifying string
+       is formatted per the AlertingElementFormat property."
+  8: vmwEnvAlertingFormat
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: cimObjectPath
+     Descr="The format of the AlertingManagedElement property is
+       interpretable based upon the value of this property."
+  9: vmwEnvSystemName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's Name for the Provider generating this message."
+ 10: vmwEnvProviderName
+     Syntax="OCTETSTR"
+     Descr="The name of the CIM provider, a software module loaded into the CIM subsystem, generating this message."
+EDESC
+#
+#
+#
+EVENT vmwESXEnvThermalAlert .1.3.6.1.4.1.6876.4.1.0.305 "Status Events" Normal
+FORMAT $*
+SDESC
+
+A cooling/thermal alert as received from the Common Infrastructure Management (CIM) subsystem on this system.
+REFERENCE  http://www.dmtf.org/standards/cim/cim_schema_v2240 : file CIM_AlertIndication.mof
+Variables:
+  1: vmwEnvDescription
+     Syntax="OCTETSTR"
+     Descr="A short description of the Indication."
+  2: vmwEnvEventTime
+     Syntax="OCTETSTR"
+     Descr="The time and date the underlying event was first 
+       detected. May be set to the time the SNMP agent recieved the notification 
+       if in the incoming CIM indication the value is
+       NULL due to the creating entity not being capable of providing 
+       this information. This value is based on the notion of
+       local date and time of the Managed System Element
+       generating the Indication."
+  3: vmwEnvIndicationTime
+     Syntax="OCTETSTR"
+     Descr="The time and date of creation of the underlying Indication received by the snmp agent. The
+       property may be set to the time SNMP agent received the notification if the entity creating the
+       Indication is not capable of determining this
+       information and delivers a null IndicationTime property. Note that IndicationTime may be the same
+       for two Indications that are generated in rapid succession."
+  4: vmwEnvPerceivedSeverity
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: information
+       3: warning
+       4: minor
+       5: major
+       6: critical
+       7: fatal
+     Descr="An enumerated value that describes the severity of the 
+       Alert Indication from the notifier's point of view."
+  5: vmwEnvAlertType
+     Syntax="INTEGER"
+       1: other
+       2: communications
+       3: qos
+       4: processingError
+       5: deviceAlert
+       6: environmentalAlert
+       7: modelChange
+       8: securityAlert
+     Descr="Primary classification of the Indication."
+  6: vmwEnvSysCreationClassName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's CreationClassName for the Provider 
+       generating this Indication."
+  7: vmwEnvAlertingElement
+     Syntax="OCTETSTR"
+     Descr="The identifying information of the entity (ie, the
+       instance) for which this notification is generated. The
+       property contains the CIM path of an CIM object instance, 
+       encoded as a string parameter - if the instance is modeled in the CIM
+       Schema. If not a CIM instance, the property contains
+       some identifying string that names the entity for which
+       the Alert is generated. The path or identifying string
+       is formatted per the AlertingElementFormat property."
+  8: vmwEnvAlertingFormat
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: cimObjectPath
+     Descr="The format of the AlertingManagedElement property is
+       interpretable based upon the value of this property."
+  9: vmwEnvSystemName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's Name for the Provider generating this message."
+ 10: vmwEnvProviderName
+     Syntax="OCTETSTR"
+     Descr="The name of the CIM provider, a software module loaded into the CIM subsystem, generating this message."
+EDESC
+#
+#
+#
+EVENT vmwESXEnvDiskAlert .1.3.6.1.4.1.6876.4.1.0.306 "Status Events" Normal
+FORMAT $*
+SDESC
+
+A disk drive alert as received from the Common Infrastructure Management (CIM) subsystem on this system.
+REFERENCE  http://www.dmtf.org/standards/cim/cim_schema_v2240 : file CIM_AlertIndication.mof
+Variables:
+  1: vmwEnvDescription
+     Syntax="OCTETSTR"
+     Descr="A short description of the Indication."
+  2: vmwEnvEventTime
+     Syntax="OCTETSTR"
+     Descr="The time and date the underlying event was first 
+       detected. May be set to the time the SNMP agent recieved the notification 
+       if in the incoming CIM indication the value is
+       NULL due to the creating entity not being capable of providing 
+       this information. This value is based on the notion of
+       local date and time of the Managed System Element
+       generating the Indication."
+  3: vmwEnvIndicationTime
+     Syntax="OCTETSTR"
+     Descr="The time and date of creation of the underlying Indication received by the snmp agent. The
+       property may be set to the time SNMP agent received the notification if the entity creating the
+       Indication is not capable of determining this
+       information and delivers a null IndicationTime property. Note that IndicationTime may be the same
+       for two Indications that are generated in rapid succession."
+  4: vmwEnvPerceivedSeverity
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: information
+       3: warning
+       4: minor
+       5: major
+       6: critical
+       7: fatal
+     Descr="An enumerated value that describes the severity of the 
+       Alert Indication from the notifier's point of view."
+  5: vmwEnvAlertType
+     Syntax="INTEGER"
+       1: other
+       2: communications
+       3: qos
+       4: processingError
+       5: deviceAlert
+       6: environmentalAlert
+       7: modelChange
+       8: securityAlert
+     Descr="Primary classification of the Indication."
+  6: vmwEnvSysCreationClassName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's CreationClassName for the Provider 
+       generating this Indication."
+  7: vmwEnvAlertingElement
+     Syntax="OCTETSTR"
+     Descr="The identifying information of the entity (ie, the
+       instance) for which this notification is generated. The
+       property contains the CIM path of an CIM object instance, 
+       encoded as a string parameter - if the instance is modeled in the CIM
+       Schema. If not a CIM instance, the property contains
+       some identifying string that names the entity for which
+       the Alert is generated. The path or identifying string
+       is formatted per the AlertingElementFormat property."
+  8: vmwEnvAlertingFormat
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: cimObjectPath
+     Descr="The format of the AlertingManagedElement property is
+       interpretable based upon the value of this property."
+  9: vmwEnvSystemName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's Name for the Provider generating this message."
+ 10: vmwEnvProviderName
+     Syntax="OCTETSTR"
+     Descr="The name of the CIM provider, a software module loaded into the CIM subsystem, generating this message."
+EDESC
+#
+#
+#
+EVENT vmwESXEnvPowerAlert .1.3.6.1.4.1.6876.4.1.0.307 "Status Events" Normal
+FORMAT $*
+SDESC
+
+A power suppply alert as received from the Common Infrastructure Management (CIM) subsystem on this system.
+REFERENCE  http://www.dmtf.org/standards/cim/cim_schema_v2240 : file CIM_AlertIndication.mof
+Variables:
+  1: vmwEnvDescription
+     Syntax="OCTETSTR"
+     Descr="A short description of the Indication."
+  2: vmwEnvEventTime
+     Syntax="OCTETSTR"
+     Descr="The time and date the underlying event was first 
+       detected. May be set to the time the SNMP agent recieved the notification 
+       if in the incoming CIM indication the value is
+       NULL due to the creating entity not being capable of providing 
+       this information. This value is based on the notion of
+       local date and time of the Managed System Element
+       generating the Indication."
+  3: vmwEnvIndicationTime
+     Syntax="OCTETSTR"
+     Descr="The time and date of creation of the underlying Indication received by the snmp agent. The
+       property may be set to the time SNMP agent received the notification if the entity creating the
+       Indication is not capable of determining this
+       information and delivers a null IndicationTime property. Note that IndicationTime may be the same
+       for two Indications that are generated in rapid succession."
+  4: vmwEnvPerceivedSeverity
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: information
+       3: warning
+       4: minor
+       5: major
+       6: critical
+       7: fatal
+     Descr="An enumerated value that describes the severity of the 
+       Alert Indication from the notifier's point of view."
+  5: vmwEnvAlertType
+     Syntax="INTEGER"
+       1: other
+       2: communications
+       3: qos
+       4: processingError
+       5: deviceAlert
+       6: environmentalAlert
+       7: modelChange
+       8: securityAlert
+     Descr="Primary classification of the Indication."
+  6: vmwEnvSysCreationClassName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's CreationClassName for the Provider 
+       generating this Indication."
+  7: vmwEnvAlertingElement
+     Syntax="OCTETSTR"
+     Descr="The identifying information of the entity (ie, the
+       instance) for which this notification is generated. The
+       property contains the CIM path of an CIM object instance, 
+       encoded as a string parameter - if the instance is modeled in the CIM
+       Schema. If not a CIM instance, the property contains
+       some identifying string that names the entity for which
+       the Alert is generated. The path or identifying string
+       is formatted per the AlertingElementFormat property."
+  8: vmwEnvAlertingFormat
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: cimObjectPath
+     Descr="The format of the AlertingManagedElement property is
+       interpretable based upon the value of this property."
+  9: vmwEnvSystemName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's Name for the Provider generating this message."
+ 10: vmwEnvProviderName
+     Syntax="OCTETSTR"
+     Descr="The name of the CIM provider, a software module loaded into the CIM subsystem, generating this message."
+EDESC
+#
+#
+#
+EVENT vmwESXEnvProcessorAlert .1.3.6.1.4.1.6876.4.1.0.308 "Status Events" Normal
+FORMAT $*
+SDESC
+
+A IPMI processor alert as received from the Common Infrastructure Management (CIM) subsystem on this system.
+REFERENCE  http://www.dmtf.org/standards/cim/cim_schema_v2240 : file CIM_AlertIndication.mof
+Variables:
+  1: vmwEnvDescription
+     Syntax="OCTETSTR"
+     Descr="A short description of the Indication."
+  2: vmwEnvEventTime
+     Syntax="OCTETSTR"
+     Descr="The time and date the underlying event was first 
+       detected. May be set to the time the SNMP agent recieved the notification 
+       if in the incoming CIM indication the value is
+       NULL due to the creating entity not being capable of providing 
+       this information. This value is based on the notion of
+       local date and time of the Managed System Element
+       generating the Indication."
+  3: vmwEnvIndicationTime
+     Syntax="OCTETSTR"
+     Descr="The time and date of creation of the underlying Indication received by the snmp agent. The
+       property may be set to the time SNMP agent received the notification if the entity creating the
+       Indication is not capable of determining this
+       information and delivers a null IndicationTime property. Note that IndicationTime may be the same
+       for two Indications that are generated in rapid succession."
+  4: vmwEnvPerceivedSeverity
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: information
+       3: warning
+       4: minor
+       5: major
+       6: critical
+       7: fatal
+     Descr="An enumerated value that describes the severity of the 
+       Alert Indication from the notifier's point of view."
+  5: vmwEnvAlertType
+     Syntax="INTEGER"
+       1: other
+       2: communications
+       3: qos
+       4: processingError
+       5: deviceAlert
+       6: environmentalAlert
+       7: modelChange
+       8: securityAlert
+     Descr="Primary classification of the Indication."
+  6: vmwEnvSysCreationClassName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's CreationClassName for the Provider 
+       generating this Indication."
+  7: vmwEnvAlertingElement
+     Syntax="OCTETSTR"
+     Descr="The identifying information of the entity (ie, the
+       instance) for which this notification is generated. The
+       property contains the CIM path of an CIM object instance, 
+       encoded as a string parameter - if the instance is modeled in the CIM
+       Schema. If not a CIM instance, the property contains
+       some identifying string that names the entity for which
+       the Alert is generated. The path or identifying string
+       is formatted per the AlertingElementFormat property."
+  8: vmwEnvAlertingFormat
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: cimObjectPath
+     Descr="The format of the AlertingManagedElement property is
+       interpretable based upon the value of this property."
+  9: vmwEnvSystemName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's Name for the Provider generating this message."
+ 10: vmwEnvProviderName
+     Syntax="OCTETSTR"
+     Descr="The name of the CIM provider, a software module loaded into the CIM subsystem, generating this message."
+EDESC
+#
+#
+#
+EVENT vmwESXEnvMemoryAlert .1.3.6.1.4.1.6876.4.1.0.309 "Status Events" Normal
+FORMAT $*
+SDESC
+
+A IPMI memory alert as received from the Common Infrastructure Management (CIM) subsystem on this system.
+REFERENCE  http://www.dmtf.org/standards/cim/cim_schema_v2240 : file CIM_AlertIndication.mof
+Variables:
+  1: vmwEnvDescription
+     Syntax="OCTETSTR"
+     Descr="A short description of the Indication."
+  2: vmwEnvEventTime
+     Syntax="OCTETSTR"
+     Descr="The time and date the underlying event was first 
+       detected. May be set to the time the SNMP agent recieved the notification 
+       if in the incoming CIM indication the value is
+       NULL due to the creating entity not being capable of providing 
+       this information. This value is based on the notion of
+       local date and time of the Managed System Element
+       generating the Indication."
+  3: vmwEnvIndicationTime
+     Syntax="OCTETSTR"
+     Descr="The time and date of creation of the underlying Indication received by the snmp agent. The
+       property may be set to the time SNMP agent received the notification if the entity creating the
+       Indication is not capable of determining this
+       information and delivers a null IndicationTime property. Note that IndicationTime may be the same
+       for two Indications that are generated in rapid succession."
+  4: vmwEnvPerceivedSeverity
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: information
+       3: warning
+       4: minor
+       5: major
+       6: critical
+       7: fatal
+     Descr="An enumerated value that describes the severity of the 
+       Alert Indication from the notifier's point of view."
+  5: vmwEnvAlertType
+     Syntax="INTEGER"
+       1: other
+       2: communications
+       3: qos
+       4: processingError
+       5: deviceAlert
+       6: environmentalAlert
+       7: modelChange
+       8: securityAlert
+     Descr="Primary classification of the Indication."
+  6: vmwEnvSysCreationClassName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's CreationClassName for the Provider 
+       generating this Indication."
+  7: vmwEnvAlertingElement
+     Syntax="OCTETSTR"
+     Descr="The identifying information of the entity (ie, the
+       instance) for which this notification is generated. The
+       property contains the CIM path of an CIM object instance, 
+       encoded as a string parameter - if the instance is modeled in the CIM
+       Schema. If not a CIM instance, the property contains
+       some identifying string that names the entity for which
+       the Alert is generated. The path or identifying string
+       is formatted per the AlertingElementFormat property."
+  8: vmwEnvAlertingFormat
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: cimObjectPath
+     Descr="The format of the AlertingManagedElement property is
+       interpretable based upon the value of this property."
+  9: vmwEnvSystemName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's Name for the Provider generating this message."
+ 10: vmwEnvProviderName
+     Syntax="OCTETSTR"
+     Descr="The name of the CIM provider, a software module loaded into the CIM subsystem, generating this message."
+EDESC
+#
+#
+#
+EVENT vmwESXEnvBIOSAlert .1.3.6.1.4.1.6876.4.1.0.310 "Status Events" Normal
+FORMAT $*
+SDESC
+
+BIOS System Event Log alert as received from the Common Infrastructure Management (CIM) subsystem on this system.
+REFERENCE  http://www.dmtf.org/standards/cim/cim_schema_v2240 : file CIM_AlertIndication.mof
+Variables:
+  1: vmwEnvDescription
+     Syntax="OCTETSTR"
+     Descr="A short description of the Indication."
+  2: vmwEnvEventTime
+     Syntax="OCTETSTR"
+     Descr="The time and date the underlying event was first 
+       detected. May be set to the time the SNMP agent recieved the notification 
+       if in the incoming CIM indication the value is
+       NULL due to the creating entity not being capable of providing 
+       this information. This value is based on the notion of
+       local date and time of the Managed System Element
+       generating the Indication."
+  3: vmwEnvIndicationTime
+     Syntax="OCTETSTR"
+     Descr="The time and date of creation of the underlying Indication received by the snmp agent. The
+       property may be set to the time SNMP agent received the notification if the entity creating the
+       Indication is not capable of determining this
+       information and delivers a null IndicationTime property. Note that IndicationTime may be the same
+       for two Indications that are generated in rapid succession."
+  4: vmwEnvPerceivedSeverity
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: information
+       3: warning
+       4: minor
+       5: major
+       6: critical
+       7: fatal
+     Descr="An enumerated value that describes the severity of the 
+       Alert Indication from the notifier's point of view."
+  5: vmwEnvAlertType
+     Syntax="INTEGER"
+       1: other
+       2: communications
+       3: qos
+       4: processingError
+       5: deviceAlert
+       6: environmentalAlert
+       7: modelChange
+       8: securityAlert
+     Descr="Primary classification of the Indication."
+  6: vmwEnvSysCreationClassName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's CreationClassName for the Provider 
+       generating this Indication."
+  7: vmwEnvAlertingElement
+     Syntax="OCTETSTR"
+     Descr="The identifying information of the entity (ie, the
+       instance) for which this notification is generated. The
+       property contains the CIM path of an CIM object instance, 
+       encoded as a string parameter - if the instance is modeled in the CIM
+       Schema. If not a CIM instance, the property contains
+       some identifying string that names the entity for which
+       the Alert is generated. The path or identifying string
+       is formatted per the AlertingElementFormat property."
+  8: vmwEnvAlertingFormat
+     Syntax="INTEGER"
+       0: unknown
+       1: other
+       2: cimObjectPath
+     Descr="The format of the AlertingManagedElement property is
+       interpretable based upon the value of this property."
+  9: vmwEnvSystemName
+     Syntax="OCTETSTR"
+     Descr="The scoping System's Name for the Provider generating this message."
+ 10: vmwEnvProviderName
+     Syntax="OCTETSTR"
+     Descr="The name of the CIM provider, a software module loaded into the CIM subsystem, generating this message."
+EDESC

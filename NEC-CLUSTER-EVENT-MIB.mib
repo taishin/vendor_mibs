@@ -1,0 +1,128 @@
+-- ****************************************************************************
+-- NEC Cluster Event MIB ver.201109060300Z
+-- 
+-- Copyright (c) 2011 by NEC Corporation. All Rights Reserved.
+-- 
+-- ****************************************************************************
+
+NEC-CLUSTER-EVENT-MIB DEFINITIONS ::= BEGIN
+IMPORTS
+    MODULE-IDENTITY,
+    OBJECT-IDENTITY,
+    NOTIFICATION-TYPE,
+    enterprises
+        FROM SNMPv2-SMI
+    DisplayString
+        FROM SNMPv2-TC
+    base-mib
+        FROM NEC-CLUSTER-SMI;
+
+-- =====================================
+-- Module Identity
+-- =====================================
+
+clusterEventMIB MODULE-IDENTITY
+    LAST-UPDATED    "201109060300Z"
+    ORGANIZATION    "NEC Corporation"
+    CONTACT-INFO    "7-1, Shiba 5-chome
+                     Minato-ku, Tokyo 108-8001
+                     Japan"
+    DESCRIPTION     "The mib module for event notification from cluster system."
+    REVISION        "201109060300Z"
+    DESCRIPTION
+        "Initial version of this mib module."
+    ::= { base-mib 1 }
+
+-- =====================================
+-- Definitions of MIB Tree
+-- =====================================
+
+clusterEventNotifications    OBJECT IDENTIFIER ::= { clusterEventMIB 0 }
+clusterEvent                 OBJECT IDENTIFIER ::= { clusterEventMIB 1 }
+
+-- =====================================
+-- Definitions of Notification
+-- =====================================
+
+clusterEventInformation NOTIFICATION-TYPE
+        OBJECTS {
+                  clusterEventMessage,
+                  clusterEventID,
+                  clusterEventDateTime,
+                  clusterEventServerName,
+                  clusterEventModuleName
+                }
+        STATUS        current
+        DESCRIPTION   "The event of information level occured."
+        ::= { clusterEventNotifications 1 }
+
+
+clusterEventWarning NOTIFICATION-TYPE
+        OBJECTS {
+                  clusterEventMessage,
+                  clusterEventID,
+                  clusterEventDateTime,
+                  clusterEventServerName,
+                  clusterEventModuleName
+                }
+        STATUS        current
+        DESCRIPTION   "The event of warning level occured."
+        ::= { clusterEventNotifications 2 }
+
+
+
+clusterEventError NOTIFICATION-TYPE
+        OBJECTS {
+                  clusterEventMessage,
+                  clusterEventID,
+                  clusterEventDateTime,
+                  clusterEventServerName,
+                  clusterEventModuleName
+                }
+        STATUS        current
+        DESCRIPTION   "The event of error level occured."
+        ::= { clusterEventNotifications 3 }
+
+
+-- =====================================
+-- Definitions of MIB Object
+-- =====================================
+
+-- clusterEvent
+
+clusterEventMessage OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The message of event."
+        ::= { clusterEvent 1 }
+
+clusterEventID OBJECT-TYPE
+        SYNTAX        INTEGER
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The id of event."
+        ::= { clusterEvent 2 }
+
+clusterEventDateTime OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The date and time of event occured."
+        ::= { clusterEvent 3 }
+
+clusterEventServerName OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The server name of event occured."
+        ::= { clusterEvent 4 }
+
+clusterEventModuleName OBJECT-TYPE
+        SYNTAX        DisplayString
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION   "The module name of event occured."
+        ::= { clusterEvent 5 }
+
+END

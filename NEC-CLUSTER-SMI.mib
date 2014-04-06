@@ -1,0 +1,22 @@
+-- ****************************************************************************
+-- NEC Cluster SMI MIB ver.201109060300Z
+-- 
+-- Copyright (c) 2011 by NEC Corporation. All Rights Reserved.
+-- 
+-- ****************************************************************************
+
+NEC-CLUSTER-SMI DEFINITIONS ::= BEGIN
+IMPORTS
+    enterprises
+        FROM RFC1155-SMI;
+
+    nec              OBJECT IDENTIFIER ::= { enterprises 119 }
+    necProduct       OBJECT IDENTIFIER ::= { nec 1 }
+    nec-mib          OBJECT IDENTIFIER ::= { nec 2 }
+    cluster          OBJECT IDENTIFIER ::= { necProduct 207 }
+    base             OBJECT IDENTIFIER ::= { cluster 1 }
+    necProductDepend OBJECT IDENTIFIER ::= { nec-mib 3 }
+    cluster-mib      OBJECT IDENTIFIER ::= { necProductDepend 207 }
+    base-mib         OBJECT IDENTIFIER ::= { cluster-mib 1 }
+
+END
