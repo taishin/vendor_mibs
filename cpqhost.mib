@@ -77,7 +77,7 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
 --      supporting the Host OS MIB.
 --
 --      A Management Agent conforming to this document will return a
---      cpqHoMibRevMajor of one (1) and a cpqHoMibRevMinor of thirty-filve (35).
+--      cpqHoMibRevMajor of one (1) and a cpqHoMibRevMinor of thirty-six (36).
 --
 -- ****************************************************************************
 
@@ -329,7 +329,38 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
             windows2003-ia64(20),      -- Microsoft Windows Server 2003 for Itanium-based Systems
             windows2008(21),           -- Microsoft Windows Server 2008
             windows2008-x64(22),       -- Microsoft Windows Server 2008 x64 Edition
-            windows2008-ia64(23)       -- Microsoft Windows Server 2008 for Itanium-based Systems
+            windows2008-ia64(23),      -- Microsoft Windows Server 2008 for Itanium-based Systems
+            vmware-esx(24),            -- VMware ESX Classic
+            vmware-esxi(25),           -- VMware ESXi
+            windows2012(26),           -- Microsoft Windows 2012 Server
+            windows7(27),              -- Microsoft Windows 7
+            windows7-x64(28),          -- Microsoft Windows 7 64-bit
+            windows8(29),              -- Microsoft Windows 8
+            windows8-x64(30),          -- Microsoft Windows 8 64-bit
+            windows81(31),             -- Microsoft Windows 8.1
+            windows81-x64(32),         -- Microsoft Windows 8.1 64-bit
+            windowsxp(33),             -- Microsoft Windows XP
+            windowsxp-x64(34),         -- Microsoft Windows XP 64-Bit
+            windowsvista(35),          -- Microsoft Windows Vista
+            windowsvista-x64(36),      -- Microsoft Windows Vista 64-Bit
+            windows2008-r2(37),        -- Microsoft Windows Server 2008 R2
+            windows2012-r2(38),        -- Microsoft Windows Server 2012 R2
+            rhel(39),                  -- RedHat Enterprise Linux
+            rhel-64(40),               -- RedHat Enterprise Linux 64-Bit
+            solaris-64(41),            -- Solaris 64-Bit
+            sles(42),                  -- SUSE Linux Enterprise Server
+            sles-64(43),               -- SUSE Linux Enterprise Server 64-Bit
+            ubuntu(44),                -- Ubuntu
+            ubuntu-64(45),             -- Ubuntu 64-Bit
+            debian(46),                -- Debian
+            debian-64(47),             -- Debian 64-Bit
+            linux-64-bit(48),          -- Linux 64-Bit
+            other-64-bit(49),          -- Other 64-Bit
+            centos-32bit(50),          -- CentOS 32-bit
+            centos-64bit(51),          -- CentOS 64-bit
+            oracle-linux32(52),        -- Oracle Linux 32-bit
+            oracle-linux64(53),        -- Oracle Linux 64-bit
+            apple-osx(54)              -- Apple OS X
             }
         ACCESS  read-only
         STATUS  mandatory
@@ -435,6 +466,19 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
             "Full computer name of the host"
         ::= { cpqHoInfo 12 }   
         
+     cpqHosysDescr OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..255))
+        ACCESS  read-only
+        STATUS  optional
+        DESCRIPTION
+            "The value that would be returned in the RFC-1213 
+            sysDescr MIB element. It should include the full 
+            name and version identification of the system's 
+            hardware type, software operating-system, and 
+            networking software.  It is mandatory that this only 
+            contain printable ASCII characters."
+       ::= { cpqHoInfo 13}
+
 -- ****************************************************************************
 --   Host OS CPU Utilization Table
 --   =============================
@@ -1576,6 +1620,53 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
              physical server. If the OS cannot determine a unique ID, it will 
              default the variable to blank."
        ::= { cpqHoSystemStatus 6 }
+       
+    cpqHoMibHealthStatusArray OBJECT-TYPE
+        SYNTAX  OCTET STRING (SIZE (1..256))
+        ACCESS  read-only
+        STATUS  mandatory
+        DESCRIPTION
+           "The MIB Health Status Array is an array of status values representing an
+              overall status in element 0 follwed by server and storage status values as follows:
+
+             Octet   Element   Field
+            ======== ======= =========
+               0        0    Aggregated Status of array elements
+               1        1    Status of element 1
+               2        2    Status of element 2
+               .
+               .
+               .
+               n        n    Status of element n
+               
+                        
+            Status         0 - Not available
+                           1 - Other
+                           2 - OK
+                           3 - Degraded
+                           4 - Failed
+               .
+               .
+      Mibs are assigned an array element as follows.  New items are added at the end.
+           0 -  System Health Status (overall status as reported by who is reporting (agents or iLO))
+           1 -  Total Aggregate (Includes IML Status)
+           2 -  Processors    (TBD 232.1.2.2.4:cpqSeCpuCondition)
+           3 -  Memory        (232.6.2.14.4:cpqHeResilientMemCondition)
+           4 -  Cooling       (232.6.2.6.4:cpqHeThermalSystemFanStatus)
+           5 -  Sensors       (232.6.2.6.3:cpqHeThermalTempStatus)
+           6 -  Power         (232.6.2.9.1:cpqHeFltTolPwrSupplyCondition)
+           7 -  ProLiant Logs (232.6.2.11.2:cpqHeEventLogCondition)
+           8 -  ASR           (232.6.2.5.17:cpqHeAsrCondition)
+           9 -  Drive Array   (232.3.1.3:cpqDaMibCondition)
+           10 - SCSI          (232.5.1.3:cpqScsiMibCondition)
+           11 - Storage Enclosures (232.8.1.3:cpqSsMibCondition)
+           12 - IDE           (232.14.1.3:cpqIdeMibCondition)
+           13 - FC            (232.16.1.3:cpqFcaMibCondition)
+           14 - Networks      (232.18.1.3:cpqNicMibCondition)
+           15 - MP            (232.9.1.3:cpqSm2MibCondition) "
+
+  ::= { cpqHoSystemStatus 7 }
+
 -- ****************************************************************************
 --   Trap Info Group
 --   ================
@@ -2181,6 +2272,8 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
               --#ARGUMENTS {2}
               --#SEVERITY MAJOR
               --#TIMEINDEX 99
+              --#SIMPLE_SEVERITY MAJOR
+              --#HWSTATUS_CATEGORY NONE              
 
         ::= 11003
 
@@ -2197,7 +2290,9 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
               --#ARGUMENTS {2}
               --#SEVERITY MAJOR
               --#TIMEINDEX 99
-
+              --#SIMPLE_SEVERITY MAJOR
+              --#HWSTATUS_CATEGORY NONE
+              
         ::= 11004
 
     cpqHo2NicStatusOk TRAP-TYPE
@@ -2252,10 +2347,13 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
             the OK condition."
 
              --#TYPE "Status Trap (11008)"
-             --#SUMMARY "NIC Status is OK for slot %s, port %s."
+             --#SUMMARY "NIC status is ok for slot %s, port %s."
              --#ARGUMENTS {2, 3}
              --#SEVERITY MAJOR
              --#TIMEINDEX 99
+             --#SIMPLE_SEVERITY OK
+             --#HWSTATUS_CATEGORY NETWORK
+                          
         ::= 11008
 
     cpqHo2NicStatusFailed2 TRAP-TYPE
@@ -2267,10 +2365,14 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
             the Failed condition."
 
              --#TYPE "Status Trap (11009)"
-             --#SUMMARY "NIC Status is Failed for slot %s, port %s."
+             --#SUMMARY "NIC status is failed for slot %s, port %s."
              --#ARGUMENTS {2, 3}
              --#SEVERITY MAJOR
              --#TIMEINDEX 99
+             --#SIMPLE_SEVERITY MAJOR
+             --#HWSTATUS_CATEGORY NETWORK
+             --#ACTION "Check the network cables. Replace the failed NIC."
+                                       
         ::= 11009
 
     cpqHo2NicSwitchoverOccurred2 TRAP-TYPE
@@ -2287,6 +2389,9 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
              --#ARGUMENTS {2, 3, 4, 5}
              --#SEVERITY MAJOR
              --#TIMEINDEX 99
+             --#SIMPLE_SEVERITY MAJOR
+             --#HWSTATUS_CATEGORY NETWORK  
+             --#ACTION "Examine the network connections and check for a NIC failure."           
         ::= 11010
 
     cpqHoProcessEventTrap TRAP-TYPE
@@ -2300,7 +2405,9 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
               --#ARGUMENTS {2}
               --#SEVERITY MAJOR
               --#TIMEINDEX 99
-
+              --#SIMPLE_SEVERITY MAJOR
+              --#HWSTATUS_CATEGORY NONE
+              
         ::= 11011
 
     cpqHoProcessCountWarning TRAP-TYPE
@@ -2317,7 +2424,9 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
               --#SEVERITY MAJOR
               --#TIMEINDEX 99
               --#STATE DEGRADED
-
+              --#SIMPLE_SEVERITY MAJOR
+              --#HWSTATUS_CATEGORY NONE
+              
         ::= 11012
 
     cpqHoProcessCountNormal TRAP-TYPE
@@ -2334,7 +2443,9 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
               --#SEVERITY INFORMATIONAL
               --#TIMEINDEX 99
               --#STATE OPERATIONAL
-
+              --#SIMPLE_SEVERITY OK
+              --#HWSTATUS_CATEGORY NONE
+              
         ::= 11013
 
    cpqHoCriticalSoftwareUpdateTrap TRAP-TYPE
@@ -2348,7 +2459,10 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
               --#ARGUMENTS {2}
               --#SEVERITY CRITICAL
               --#TIMEINDEX 99
-
+              --#SIMPLE_SEVERITY CRITICAL
+              --#HWSTATUS_CATEGORY NONE
+              --#ACTION "Install the required software updates."
+              
         ::= 11014
 
    cpqHoCrashDumpNotEnabledTrap TRAP-TYPE
@@ -2359,11 +2473,13 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
              This trap is not sent if cpqHoCrashDumpMonitoring is disabled."
 
               --#TYPE "Crash Dump not enabled Notification Trap (11015)"
-              --#SUMMARY "Crash Dump is not enabled."
+              --#SUMMARY "Crash dump is not enabled."
               --#ARGUMENTS {}
               --#SEVERITY WARNING
               --#TIMEINDEX 99
-
+              --#SIMPLE_SEVERITY MAJOR
+              --#HWSTATUS_CATEGORY NONE
+              
         ::= 11015
 
 
@@ -2393,7 +2509,9 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
               --#ARGUMENTS {2, 4, 8}
               --#SEVERITY WARNING
               --#TIMEINDEX 99
-
+              --#SIMPLE_SEVERITY MAJOR
+              --#HWSTATUS_CATEGORY NONE
+              
         ::= 11017
 
   cpqHo2PowerThresholdTrap TRAP-TYPE
@@ -2404,11 +2522,13 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
             "Power threshold exceeded."
 
               --#TYPE "Power Threshold Exceeded (11018)"
-              --#SUMMARY "%s"
-              --#ARGUMENTS {6}
+              --#SUMMARY "Power threshold has been exceeded (Warning Type: %s, Threshold: %d watts, Duration: %d minutes)"
+              --#ARGUMENTS {2, 3, 4}
               --#SEVERITY MINOR
               --#TIMEINDEX 99
-
+              --#SIMPLE_SEVERITY MAJOR
+              --#HWSTATUS_CATEGORY POWER
+              
         ::= 11018
 
   cpqHoBootPagingFileOrFreeSpaceTooSmallTrap TRAP-TYPE
@@ -2421,8 +2541,25 @@ CPQHOST-MIB DEFINITIONS ::= BEGIN
               --#ARGUMENTS {3, 4, 5}
               --#SEVERITY WARNING
               --#TIMEINDEX 99
-
+              --#SIMPLE_SEVERITY MAJOR
+              --#HWSTATUS_CATEGORY NONE
+              
         ::= 11019
+
+  cpqHoMibHealthStatusArrayChangeTrap TRAP-TYPE 
+        ENTERPRISE compaq
+        VARIABLES { sysName, cpqHoTrapFlags, cpqHoMibHealthStatusArray }
+        DESCRIPTION
+        "A change in the cpqHoMibHealthStatusArray has occurred."
+              --#TYPE "Health Status Array Change occurred (11020)"
+              --#SUMMARY "A change in the health status of the server has occurred, the status is now %s"
+              --#ARGUMENTS {2}
+              --#SEVERITY INFORMATIONAL
+              --#TIMEINDEX 99
+              --#SIMPLE_SEVERITY OK
+              --#HWSTATUS_CATEGORY NONE
+              
+        ::= 11020
 
   
   END
