@@ -1,0 +1,701 @@
+--------------------------------------------------------------------------------
+--
+-- System Manager SNMP MIB (HITACHIIPMIP2.MIB)
+--
+-- All Rights Reserved, Copyright (C) 2008, Hitachi.Ltd.
+--
+-- Version 04-00-00-00  DATE 2008.04.22
+--
+--------------------------------------------------------------------------------
+
+SystemManagerHITACHIIPMI-MIB DEFINITIONS ::= BEGIN
+
+  IMPORTS
+    enterprises
+      FROM RFC1155-SMI
+    OBJECT-TYPE
+      FROM RFC-1212
+    DisplayString
+      FROM RFC-1213;
+
+--------------------------------------------------------------------------------
+
+  hitachi         OBJECT IDENTIFIER  ::= { enterprises   116 }
+
+--------------------------------------------------------------------------------
+
+  systemExMib         OBJECT IDENTIFIER  ::= { hitachi             5 }
+  systemManagerMibs   OBJECT IDENTIFIER  ::= { systemExMib        21 }
+  information         OBJECT IDENTIFIER  ::= { systemManagerMibs   1 }
+
+--------------------------------------------------------------------------------
+-- System Manager
+-- information
+--------------------------------------------------------------------------------
+
+  HitachiHardwareInformations OBJECT IDENTIFIER  ::= { information     4 }
+
+--------------------------------------------------------------------------------
+  temperatureProbeInformation OBJECT IDENTIFIER ::= { HitachiHardwareInformations 2 }
+
+  temperatureProbeTable OBJECT-TYPE
+    SYNTAX  SEQUENCE OF TemperatureProbe
+    ACCESS  not-accessible
+    STATUS  mandatory
+  ::= { temperatureProbeInformation 1 }
+
+  temperatureProbeEntry OBJECT-TYPE
+    SYNTAX  TemperatureProbe
+    ACCESS  not-accessible
+    STATUS  mandatory
+    INDEX   { index }
+  ::= { temperatureProbeTable 1 }
+
+  TemperatureProbe ::= SEQUENCE
+  {
+    index           INTEGER,
+    currentReading  INTEGER,
+    status          INTEGER,
+    sensorName      DisplayString
+  }
+
+  index OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Index into this temperature probe table."
+  ::= { temperatureProbeEntry 1 }
+
+  currentReading OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "The present temperature reading of this temperature probe in 1/10th
+       degrees C. 0x8000000 denotes 'unknown'."
+  ::= { temperatureProbeEntry 2 }
+
+  status OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Defines the status of the temperature monitored by this temperature
+       probe.0x00 = Unknown0x01 = OK0x02 = Low(Non-critical)0x03 = High
+       (Non-critical)0x04 = Low(Critical)0x05 = High(Critical)0x06 = Low
+       (Non-recoverable)0x07 = High(Non-recoverable)0x08 = Other errors. It is
+       indicated by a integer value as follows (hexadecimal).
+         0x00 = Unknown
+         0x01 = OK
+         0x02 = Low(Non-critical)
+         0x03 = High(Non-critical)
+         0x04 = Low(Critical)
+         0x05 = High(Critical)
+         0x06 = Low(Non-recoverable)
+         0x07 = High(Non-recoverable)
+         0x08 = Other errors"
+  ::= { temperatureProbeEntry 3 }
+
+  sensorName OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Sensor name. It is expressed in the form of string(ASCII Code)."
+  ::= { temperatureProbeEntry 4 }
+
+
+--------------------------------------------------------------------------------
+  fanInformationInformation OBJECT IDENTIFIER ::= { HitachiHardwareInformations 3 }
+
+  fanInformationTable OBJECT-TYPE
+    SYNTAX  SEQUENCE OF FanInformation
+    ACCESS  not-accessible
+    STATUS  mandatory
+  ::= { fanInformationInformation 1 }
+
+  fanInformationEntry OBJECT-TYPE
+    SYNTAX  FanInformation
+    ACCESS  not-accessible
+    STATUS  mandatory
+    INDEX   { index }
+  ::= { fanInformationTable 1 }
+
+  FanInformation ::= SEQUENCE
+  {
+    index           INTEGER,
+    currentReading  INTEGER,
+    status          INTEGER,
+    sensorName      DisplayString
+  }
+
+  index OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Index into this FAN information table."
+  ::= { fanInformationEntry 1 }
+
+  currentReading OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "The current number of rotation. 0x80000000 denotes 'unknown'."
+  ::= { fanInformationEntry 2 }
+
+  status OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Defines the status of the FAN 0x00 = Unknown0x01 = OK0x02 = Low
+       (Non-critical)0x03 = High(Non-critical)0x04 = Low(Critical)0x05 = High
+       (Critical)0x06 = Low(Non-recoverable)0x07 = High(Non-recoverable)0x08 =
+       Other errors. It is indicated by a integer value as follows 
+       (hexadecimal).
+         0x00 = Unknown
+         0x01 = OK
+         0x02 = Low(Non-critical)
+         0x03 = High(Non-critical)
+         0x04 = Low(Critical)
+         0x05 = High(Critical)
+         0x06 = Low(Non-recoverable)
+         0x07 = High(Non-recoverable)
+         0x08 = Other errors"
+  ::= { fanInformationEntry 3 }
+
+  sensorName OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Sensor name. It is expressed in the form of string(ASCII Code)."
+  ::= { fanInformationEntry 4 }
+
+
+--------------------------------------------------------------------------------
+  voltageInformationInformation OBJECT IDENTIFIER ::= { HitachiHardwareInformations 4 }
+
+  voltageInformationTable OBJECT-TYPE
+    SYNTAX  SEQUENCE OF VoltageInformation
+    ACCESS  not-accessible
+    STATUS  mandatory
+  ::= { voltageInformationInformation 1 }
+
+  voltageInformationEntry OBJECT-TYPE
+    SYNTAX  VoltageInformation
+    ACCESS  not-accessible
+    STATUS  mandatory
+    INDEX   { index }
+  ::= { voltageInformationTable 1 }
+
+  VoltageInformation ::= SEQUENCE
+  {
+    index           INTEGER,
+    currentReading  INTEGER,
+    status          INTEGER,
+    sensorName      DisplayString
+  }
+
+  index OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Index into this voltage information table."
+  ::= { voltageInformationEntry 1 }
+
+  currentReading OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "The current voltage. 0x80000000 denotes 'unknown'."
+  ::= { voltageInformationEntry 2 }
+
+  status OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Defines the status of the voltage 0x00 = Unknown0x01 = OK0x02 = Low
+       (Non-critical)0x03 = High(Non-critical)0x04 = Low(Critical)0x05 = High
+       (Critical)0x06 = Low(Non-recoverable)0x07 = High(Non-recoverable)0x08 =
+       Other errors. It is indicated by a integer value as follows 
+       (hexadecimal).
+         0x00 = Unknown
+         0x01 = OK
+         0x02 = Low(Non-critical)
+         0x03 = High(Non-critical)
+         0x04 = Low(Critical)
+         0x05 = High(Critical)
+         0x06 = Low(Non-recoverable)
+         0x07 = High(Non-recoverable)
+         0x08 = Other errors"
+  ::= { voltageInformationEntry 3 }
+
+  sensorName OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..64))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Sensor name. It is expressed in the form of string(ASCII Code)."
+  ::= { voltageInformationEntry 4 }
+
+
+--------------------------------------------------------------------------------
+  powerSupplyUnitInfoInformation OBJECT IDENTIFIER ::= { HitachiHardwareInformations 5 }
+
+  powerSupplyUnitInfoTable OBJECT-TYPE
+    SYNTAX  SEQUENCE OF PowerSupplyUnitInfo
+    ACCESS  not-accessible
+    STATUS  mandatory
+  ::= { powerSupplyUnitInfoInformation 1 }
+
+  powerSupplyUnitInfoEntry OBJECT-TYPE
+    SYNTAX  PowerSupplyUnitInfo
+    ACCESS  not-accessible
+    STATUS  mandatory
+    INDEX   { index }
+  ::= { powerSupplyUnitInfoTable 1 }
+
+  PowerSupplyUnitInfo ::= SEQUENCE
+  {
+    index       INTEGER,
+    status      INTEGER,
+    sensorName  DisplayString
+  }
+
+  index OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "The index number of the power supply."
+  ::= { powerSupplyUnitInfoEntry 1 }
+
+  status OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Power supply unit status. It is indicated by a integer value as follows 
+       (hexadecimal).
+         0x00 = Unknown
+         0x01 = attached(OK)
+         0x02 = attached(error)
+         0x03 = not attached"
+  ::= { powerSupplyUnitInfoEntry 2 }
+
+  sensorName OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Sensor name. It is expressed in the form of string(ASCII Code)."
+  ::= { powerSupplyUnitInfoEntry 3 }
+
+
+--------------------------------------------------------------------------------
+  cpuStatusInformation OBJECT IDENTIFIER ::= { HitachiHardwareInformations 6 }
+
+  cpuStatusTable OBJECT-TYPE
+    SYNTAX  SEQUENCE OF CpuStatus
+    ACCESS  not-accessible
+    STATUS  mandatory
+  ::= { cpuStatusInformation 1 }
+
+  cpuStatusEntry OBJECT-TYPE
+    SYNTAX  CpuStatus
+    ACCESS  not-accessible
+    STATUS  mandatory
+    INDEX   { index }
+  ::= { cpuStatusTable 1 }
+
+  CpuStatus ::= SEQUENCE
+  {
+    index       INTEGER,
+    status      INTEGER,
+    sensorName  DisplayString
+  }
+
+  index OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "The index number of the CPU."
+  ::= { cpuStatusEntry 1 }
+
+  status OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "CPU status. It is indicated by a integer value as follows (hexadecimal).
+         0x00 = Unknown
+         0x01 = attached(OK)
+         0x02 = attached(error)
+         0x03 = attached(disabled)
+         0x04 = not attached"
+  ::= { cpuStatusEntry 2 }
+
+  sensorName OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Sensor name. It is expressed in the form of string(ASCII Code)."
+  ::= { cpuStatusEntry 3 }
+
+
+--------------------------------------------------------------------------------
+  maintenanceInformationInformation OBJECT IDENTIFIER ::= { HitachiHardwareInformations 7 }
+
+  maintenanceInformationTable OBJECT-TYPE
+    SYNTAX  SEQUENCE OF MaintenanceInformation
+    ACCESS  not-accessible
+    STATUS  mandatory
+  ::= { maintenanceInformationInformation 1 }
+
+  maintenanceInformationEntry OBJECT-TYPE
+    SYNTAX  MaintenanceInformation
+    ACCESS  not-accessible
+    STATUS  mandatory
+    INDEX   { index }
+  ::= { maintenanceInformationTable 1 }
+
+  MaintenanceInformation ::= SEQUENCE
+  {
+    index           INTEGER,
+    stand-ByState1  INTEGER,
+    mainState1      INTEGER,
+    erasedDate1     DisplayString,
+    stand-ByState2  INTEGER,
+    mainState2      INTEGER,
+    erasedDate2     DisplayString,
+    stand-ByState3  INTEGER,
+    mainState3      INTEGER,
+    erasedDate3     DisplayString,
+    ponc            INTEGER,
+    poffc           INTEGER,
+    acpic           INTEGER,
+    erasedDate4     DisplayString,
+    otherData       INTEGER
+  }
+
+  index OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Index into this maintenance information table."
+  ::= { maintenanceInformationEntry 1 }
+
+  stand-ByState1 OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Manufacturer : Accumulated time(sec.) of Stand-by state."
+  ::= { maintenanceInformationEntry 2 }
+
+  mainState1 OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Manufacturer : Accumulated time(sec.) of Main state."
+  ::= { maintenanceInformationEntry 3 }
+
+  erasedDate1 OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Manufacturer : Erased date. It is expressed in the form of string
+       (ASCII Code)."
+  ::= { maintenanceInformationEntry 4 }
+
+  stand-ByState2 OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Maintenance(1) : Accumulated time(sec.) of Stand-by state."
+  ::= { maintenanceInformationEntry 5 }
+
+  mainState2 OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Maintenance(1) : Accumulated time(sec.) of Main state."
+  ::= { maintenanceInformationEntry 6 }
+
+  erasedDate2 OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Maintenance(1) : Erased date. It is expressed in the form of string
+       (ASCII Code)."
+  ::= { maintenanceInformationEntry 7 }
+
+  stand-ByState3 OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Maintenance(2) : Accumulated time(sec.) of Stand-by state."
+  ::= { maintenanceInformationEntry 8 }
+
+  mainState3 OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Maintenance(2) : Accumulated time(sec.) of Main state."
+  ::= { maintenanceInformationEntry 9 }
+
+  erasedDate3 OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Maintenance(2) : Erased date. It is expressed in the form of string
+       (ASCII Code)."
+  ::= { maintenanceInformationEntry 10 }
+
+  ponc OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Number of power on counts."
+  ::= { maintenanceInformationEntry 11 }
+
+  poffc OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Number of power off counts."
+  ::= { maintenanceInformationEntry 12 }
+
+  acpic OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Number of AC plug-in counts."
+  ::= { maintenanceInformationEntry 13 }
+
+  erasedDate4 OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Maintenance Information : Erased date. It is expressed in the form of
+       string(ASCII Code)."
+  ::= { maintenanceInformationEntry 14 }
+
+  otherData OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Reserved data."
+  ::= { maintenanceInformationEntry 15 }
+
+
+--------------------------------------------------------------------------------
+  systemBoardInformationInformation OBJECT IDENTIFIER ::= { HitachiHardwareInformations 8 }
+
+  systemBoardInformationTable OBJECT-TYPE
+    SYNTAX  SEQUENCE OF SystemBoardInformation
+    ACCESS  not-accessible
+    STATUS  mandatory
+  ::= { systemBoardInformationInformation 1 }
+
+  systemBoardInformationEntry OBJECT-TYPE
+    SYNTAX  SystemBoardInformation
+    ACCESS  not-accessible
+    STATUS  mandatory
+    INDEX   { index }
+  ::= { systemBoardInformationTable 1 }
+
+  SystemBoardInformation ::= SEQUENCE
+  {
+    index     INTEGER,
+    cpuName   DisplayString
+  }
+
+  index OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "The index number of the CPU Name."
+  ::= { systemBoardInformationEntry 1 }
+
+  cpuName OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "CPU Name from OEM CPU IDStrings Command. It is expressed in the form of
+       string(ASCII Code)."
+  ::= { systemBoardInformationEntry 2 }
+
+
+--------------------------------------------------------------------------------
+  selInformation OBJECT IDENTIFIER ::= { HitachiHardwareInformations 253 }
+
+  selTable OBJECT-TYPE
+    SYNTAX  SEQUENCE OF Sel
+    ACCESS  not-accessible
+    STATUS  mandatory
+  ::= { selInformation 1 }
+
+  selEntry OBJECT-TYPE
+    SYNTAX  Sel
+    ACCESS  not-accessible
+    STATUS  mandatory
+    INDEX   { index }
+  ::= { selTable 1 }
+
+  Sel ::= SEQUENCE
+  {
+    index                 INTEGER,
+    triggerSensorNumber   INTEGER,
+    recordType            INTEGER,
+    timestamp             DisplayString,
+    recordData            DisplayString,
+    eventDescription      DisplayString
+  }
+
+  index OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Index into SEL Table."
+  ::= { selEntry 1 }
+
+  triggerSensorNumber OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "The Sensor Number that triggers this event."
+  ::= { selEntry 2 }
+
+  recordType OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "02h = system event recordC0h-DFh = OEM timestampedE0h-FFh = OEM
+       non-timestamped."
+  ::= { selEntry 3 }
+
+  timestamp OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Time when event was logged. It is expressed in the form of string
+       (ASCII Code)."
+  ::= { selEntry 4 }
+
+  recordData OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Raw data bytes. It is expressed in the form of string(ASCII Code)."
+  ::= { selEntry 5 }
+
+  eventDescription OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "The Description of Event. It is expressed in the form of string
+       (ASCII Code)."
+  ::= { selEntry 6 }
+
+
+--------------------------------------------------------------------------------
+  eventGenerationInformation OBJECT IDENTIFIER ::= { HitachiHardwareInformations 254 }
+
+  eventGenerationTable OBJECT-TYPE
+    SYNTAX  SEQUENCE OF EventGeneration
+    ACCESS  not-accessible
+    STATUS  mandatory
+  ::= { eventGenerationInformation 1 }
+
+  eventGenerationEntry OBJECT-TYPE
+    SYNTAX  EventGeneration
+    ACCESS  not-accessible
+    STATUS  mandatory
+    INDEX   { eventType }
+  ::= { eventGenerationTable 1 }
+
+  EventGeneration ::= SEQUENCE
+  {
+    eventType       INTEGER,
+    eventLevel      INTEGER,
+    eventMessage    DisplayString,
+    selRecordData   DisplayString
+  }
+
+  eventType OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "This value is the event type."
+  ::= { eventGenerationEntry 1 }
+
+  eventLevel OBJECT-TYPE
+    SYNTAX  INTEGER
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "This value is the event level. It is indicated by a integer value as
+       follows (hexadecimal).
+         0x01 = Monitor
+         0x02 = Information
+         0x04 = OK
+         0x08 = Non-Critical
+         0x0A = Critical
+         0x0C = Non-Recoverable"
+  ::= { eventGenerationEntry 2 }
+
+  eventMessage OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Event Message. It is expressed in the form of string(ASCII Code)."
+  ::= { eventGenerationEntry 3 }
+
+  selRecordData OBJECT-TYPE
+    SYNTAX  DisplayString (SIZE(1..255))
+    ACCESS  read-only
+    STATUS  mandatory
+    DESCRIPTION
+      "Raw data bytes. It is expressed in the form of string(ASCII Code)."
+  ::= { eventGenerationEntry 4 }
+
+
+--------------------------------------------------------------------------------
+
+END
+
+--------------------------------------------------------------------------------
